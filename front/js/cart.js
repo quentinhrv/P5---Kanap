@@ -11,7 +11,7 @@ productIds.forEach(productId => {
   // On itère sur chaque couleur du produit.
   for (let color in panier[productId]) {
     // On récupère la quantité du produit pour la couleur choisie.
-    const quantity = panier[productId][color];
+    const quantity = parseInt(panier[productId][color]);
     // On récupère les données du produit depuis l'API.
     fetch(`http://localhost:3000/api/products/${productId}`)
       .then(response => response.json())
@@ -125,37 +125,38 @@ function supprimerProduit(productId, color) {
   location.reload();
 };
 
+window.addEventListener('load', () => {
+  const itemQuantities = document.querySelectorAll('.itemQuantity');
+  itemQuantities.forEach(itemQuantity => {
+    // Ajout de l'événement onchange à chaque input
 
-
-
-// On ajoute un évènement "change" à tous les inputs du panier
-const itemQuantities = document.querySelectorAll('.itemQuantity');
-// Boucle à travers chaque input du panier
-itemQuantities.forEach(itemQuantity => {
-  // Ajout de l'événement onchange à chaque input
-  itemQuantity.addEventListener('change', (event) => {
-    // Récupération de l'ID du produit
-    const itemId = event.target.dataset.itemId;
-    // Récupération de la nouvelle quantité
-    const newQuantity = parseInt(event.target.value);
-    // Mise à jour de la quantité du produit dans le localStorage
-    updateQuantity(itemId, newQuantity);
+    itemQuantity.addEventListener('change', (event) => {
+      // Récupération de l'ID du produit
+      const itemId = event.target.dataset.itemId;
+      // Récupération de la nouvelle quantité
+      const newQuantity = parseInt(event.target.value);
+      // Mise à jour de la quantité du produit dans le localStorage
+      updateQuantity(itemId, newQuantity);
+    });
   });
-});
+  console.log(itemQuantities.item(1));
+
+})
 
 
 // ----- Fonction de modification de la quantité ----- \\
 
 function updateQuantity(itemId, newQuantity) {
   // Récupération du panier depuis le localStorage
-  let cart = JSON.parse(localStorage.getItem('cart'));
+  // let cart = JSON.parse(localStorage.getItem('cart'));
 
   // Recherche du produit à mettre à jour dans le panier
-  const productIndex = cart.findIndex(product => product.id === itemId);
+  // const productIndex = cart.findIndex(product => product.id === itemId);
 
   // Mise à jour de la quantité du produit
-  cart[productIndex].quantity = newQuantity;
+  // cart[productIndex].quantity = newQuantity;
 
   // Mise à jour du panier dans le localStorage
-  localStorage.setItem('cart', JSON.stringify(cart));
+  // localStorage.setItem('cart', JSON.stringify(cart));
+  console.log(itemId, newQuantity);
 };
